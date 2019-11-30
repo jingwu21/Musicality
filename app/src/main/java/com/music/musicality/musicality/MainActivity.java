@@ -1,13 +1,19 @@
 package com.music.musicality.musicality;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,35 +37,56 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUp();
+        askPermission();
 
         //musicPlayer.setDataSource();
         //musicPlayer.prepare()
         //musicPlayer.start()
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!musicPlayer.isPlaying())
-                    musicPlayer.start();
-                else
-                    musicPlayer.pause();
-            }
-        });
+
+
     }
+    private void askPermission(){
+        String []permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED){
+            setUp();
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!musicPlayer.isPlaying())
+                        musicPlayer.start();
+                    else
+                        musicPlayer.pause();
+                }
+            });
+        }
+        else{
+            ActivityCompat.requestPermissions(this, permissions, 2555);
+        }
+    }
+
     private void setUp(){
         title = findViewById(R.id.musicTitle);
         picture = findViewById(R.id.musicImage);
         bar =  findViewById(R.id.musicBar);
         playButton = findViewById(R.id.musicPlay);
         musicPlayer = new MediaPlayer();
-        Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         ContentResolver contentResolver = getContentResolver();
         Cursor data = contentResolver.query(uri,null,null,null, null);
-        musicPlayer = new MediaPlayer();
+
         musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         if(data.moveToFirst()){
             String temp = data.getString(data.getColumnIndex(songName));
             title.setText(temp);
+            Log.d("hello", temp);
+            System.out.println(temp);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        askPermission();
     }
 }
