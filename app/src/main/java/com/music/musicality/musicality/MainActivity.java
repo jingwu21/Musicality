@@ -8,8 +8,10 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.MediaPlayer;
@@ -27,6 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar bar;
+    private TabLayout tablayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
         //musicPlayer.setDataSource();
         //musicPlayer.prepare()
         //musicPlayer.start()
-
+        ViewPager page = findViewById(R.id.pager);
+        ViewPagerAdapt adapter = new ViewPagerAdapt(getSupportFragmentManager());
+        page.setAdapter(adapter);
+        tablayout = findViewById(R.id.tab);
+        tablayout.setupWithViewPager(page);
 
     }
 
