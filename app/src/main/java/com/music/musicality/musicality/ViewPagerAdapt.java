@@ -19,9 +19,6 @@ public class ViewPagerAdapt extends FragmentPagerAdapter {
 
         MusicListFragment x = new MusicListFragment();
         i = i + 1;
-        Bundle c = new Bundle();
-        c.putString("yo", "Hello, Mr.Wu");
-        x.setArguments(c);
         return x;
     }
 
