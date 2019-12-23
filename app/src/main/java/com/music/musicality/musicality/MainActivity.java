@@ -30,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar bar;
     private TabLayout tablayout;
+    private TextView title;
+    private ImageView picture;
+    private SeekBar mbar;
+    private Button playButton;
+    private MediaPlayer musicPlayer;
+    //private List<Song> playList;
+    private final String songName = MediaStore.Audio.Media.TITLE;
+    private final String songAuthor = MediaStore.Audio.Media.ARTIST;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +48,59 @@ public class MainActivity extends AppCompatActivity {
         //musicPlayer.setDataSource();
         //musicPlayer.prepare()
         //musicPlayer.start()
+        askPermission();
         ViewPager page = findViewById(R.id.pager);
         ViewPagerAdapt adapter = new ViewPagerAdapt(getSupportFragmentManager());
         page.setAdapter(adapter);
         tablayout = findViewById(R.id.tab);
         tablayout.setupWithViewPager(page);
 
+    }
+
+
+    private void askPermission(){
+        String []permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED){
+            setUp();
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!musicPlayer.isPlaying())
+                        musicPlayer.start();
+                    else
+                        musicPlayer.pause();
+                }
+            });
+        }
+        else{
+            ActivityCompat.requestPermissions(this, permissions, 2555);
+        }
+    }
+
+    private void setUp(){
+        title = findViewById(R.id.musicTitle);
+        picture = findViewById(R.id.musicImage);
+        mbar =  findViewById(R.id.musicBar);
+        playButton = findViewById(R.id.musicPlay);
+        musicPlayer = new MediaPlayer();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver contentResolver = getContentResolver();
+        Cursor data = contentResolver.query(uri,null,null,null, null);
+
+        musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        if(data.moveToFirst()){
+            String temp = data.getString(data.getColumnIndex(songName));
+            title.setText(temp);
+            Log.d("hello", temp);
+            System.out.println(temp);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        askPermission();
     }
 
 }
