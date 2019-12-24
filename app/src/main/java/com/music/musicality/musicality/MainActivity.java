@@ -28,6 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private AsyncQuery asyncCursor;
     private Toolbar bar;
     private TabLayout tablayout;
     private TextView title;
