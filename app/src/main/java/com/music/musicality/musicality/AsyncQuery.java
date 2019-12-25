@@ -6,12 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 
 public class AsyncQuery extends AsyncQueryHandler{
-    public AsyncQuery(ContentResolver c){
+    private MainActivity homeObject;
+    public AsyncQuery(ContentResolver c, MainActivity homeObject){
         super(c);
+        this.homeObject = homeObject;
     }
 
     @Override
     protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-        super.onQueryComplete(token, cookie, cursor);
+
     }
 }

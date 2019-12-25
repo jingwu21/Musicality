@@ -87,16 +87,17 @@ public class MainActivity extends AppCompatActivity {
         musicPlayer = new MediaPlayer();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         ContentResolver contentResolver = getContentResolver();
-        Cursor data = contentResolver.query(uri,null,null,null, null);
-
+        //Cursor data = contentResolver.query(uri,null,null,null, null);
+        asyncCursor = new AsyncQuery(contentResolver, this);
+        asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        if(data.moveToFirst()){
+        /*if(data.moveToFirst()){
             String temp = data.getString(data.getColumnIndex(songName));
             title.setText(temp);
             Log.d("hello", temp);
             System.out.println(temp);
-        }
+        }*/
     }
 
     @Override
