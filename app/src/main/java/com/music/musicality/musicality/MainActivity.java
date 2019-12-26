@@ -29,7 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AsyncQuery asyncCursor;
+//    private AsyncQuery asyncCursor;
     private Toolbar bar;
     private TabLayout tablayout;
     private TextView title;
@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private Button playButton;
     private MediaPlayer musicPlayer;
     private List<Song> playList;
-    private final String songName = MediaStore.Audio.Media.TITLE;
-    private final String songAuthor = MediaStore.Audio.Media.ARTIST;
+    private ViewPager page;
+    private ViewPagerAdapt adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         //musicPlayer.prepare()
         //musicPlayer.start()
         askPermission();
-        ViewPager page = findViewById(R.id.pager);
-        ViewPagerAdapt adapter = new ViewPagerAdapt(getSupportFragmentManager());
+        page = findViewById(R.id.pager);
+        adapter = new ViewPagerAdapt(getSupportFragmentManager());
+        page.setOffscreenPageLimit(2);
         page.setAdapter(adapter);
         tablayout = findViewById(R.id.tab);
         tablayout.setupWithViewPager(page);
@@ -81,18 +84,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUp(){
-        title = findViewById(R.id.musicTitle);
-        picture = findViewById(R.id.musicImage);
-        mbar =  findViewById(R.id.musicBar);
-        playButton = findViewById(R.id.musicPlay);
-        musicPlayer = new MediaPlayer();
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        ContentResolver contentResolver = getContentResolver();
+//        title = findViewById(R.id.musicTitle);
+//        picture = findViewById(R.id.musicImage);
+//        mbar =  findViewById(R.id.musicBar);
+//        playButton = findViewById(R.id.musicPlay);
+//        musicPlayer = new MediaPlayer();
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//        ContentResolver contentResolver = getContentResolver();
         //Cursor data = contentResolver.query(uri,null,null,null, null);
-        playList = new ArrayList<Song>();
-        asyncCursor = new AsyncQuery(contentResolver, playList);
-        asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-        musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//        playList = new ArrayList<Song>();
+//        asyncCursor = new AsyncQuery(contentResolver, playList, this);
+//        asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+//        musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         /*if(data.moveToFirst()){
             String temp = data.getString(data.getColumnIndex(songName));
@@ -106,5 +109,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         askPermission();
     }
+
+
 
 }

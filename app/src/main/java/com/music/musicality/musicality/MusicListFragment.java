@@ -1,6 +1,9 @@
 package com.music.musicality.musicality;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,12 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MusicListFragment extends Fragment {
 
+    private AsyncQuery asyncCursor;
     private RecyclerView.Adapter recycleAdapter;
-    private ArrayList<Song> songList;
+    private List<Song> songList;
     private RecyclerView recycleContainer;
     private RecyclerView.LayoutManager recycleLayout;
     public MusicListFragment() {
@@ -29,18 +34,26 @@ public class MusicListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.music_list, container, false);
-        songList = new ArrayList<>();
-        songList.add(new Song("Nightcore", "Night", "4:00"));
-        songList.add(new Song("Here comes the boom", "Unknown", "5:32"));
-        songList.add(new Song("Born for greatness", "Roach", "4:22"));
+//        songList = new ArrayList<>();
+//        songList.add(new Song("Nightcore", "Night", "4:00"));
+//        songList.add(new Song("Here comes the boom", "Unknown", "5:32"));
+//        songList.add(new Song("Born for greatness", "Roach", "4:22"));
         recycleContainer = v.findViewById(R.id.recyclelist);
-        recycleAdapter = new RecyclerViewAdapt(songList);
+        recycleAdapter = new RecyclerViewAdapt((ArrayList)songList);
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        songList = new ArrayList<>();
+        asyncCursor = new AsyncQuery(contentResolver, songList);
+        asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
         recycleContainer.setLayoutManager(linearLayout);
         recycleContainer.setAdapter(recycleAdapter);
 
         return v;
     }
+
+
+
 
 
 }

@@ -17,10 +17,12 @@ public class AsyncQuery extends AsyncQueryHandler{
     private final String songDuration = MediaStore.Audio.Media.DURATION;
     private final String songPath = MediaStore.Audio.Media.DATA;
     private List<Song> songList;
+    private MainActivity mainActivity;
 
     public AsyncQuery(ContentResolver c, List<Song> songList){
         super(c);
         this.songList = songList;
+
     }
 
     @Override
@@ -49,7 +51,6 @@ public class AsyncQuery extends AsyncQueryHandler{
                     String name = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_TITLE);
                     String duration = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_DURATION);
                     songList.add(new Song(name, artist, duration, path));
-                    
                 }
 
             }

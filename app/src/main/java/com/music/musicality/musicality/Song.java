@@ -24,4 +24,8 @@ public class Song {
     public String getDuration() {
         return duration;
     }
+
+    public String getPath(){
+        return path;
+    }
 }
