@@ -4,10 +4,13 @@ public class Song {
     private String title;
     private String author;
     private String duration;
-    public Song(String title, String author, String duration){
+    private String path;
+
+    public Song(String title, String author, String duration, String path){
         this.title = title;
         this.author = author;
         this.duration = duration;
+        this.path = path;
     }
 
     public String getTitle(){

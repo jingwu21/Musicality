@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar mbar;
     private Button playButton;
     private MediaPlayer musicPlayer;
-    //private List<Song> playList;
+    private List<Song> playList;
     private final String songName = MediaStore.Audio.Media.TITLE;
     private final String songAuthor = MediaStore.Audio.Media.ARTIST;
     @Override
@@ -88,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         ContentResolver contentResolver = getContentResolver();
         //Cursor data = contentResolver.query(uri,null,null,null, null);
-        asyncCursor = new AsyncQuery(contentResolver, this);
+        playList = new ArrayList<Song>();
+        asyncCursor = new AsyncQuery(contentResolver, playList);
         asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
