@@ -67,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
         String []permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED){
-            setUp();
-            playButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!musicPlayer.isPlaying())
-                        musicPlayer.start();
-                    else
-                        musicPlayer.pause();
-                }
-            });
+              setUp();
+//            playButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(!musicPlayer.isPlaying())
+//                        musicPlayer.start();
+//                    else
+//                        musicPlayer.pause();
+//                }
+//            });
         }
         else{
             ActivityCompat.requestPermissions(this, permissions, 2555);

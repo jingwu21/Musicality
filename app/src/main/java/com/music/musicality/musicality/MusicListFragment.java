@@ -34,26 +34,29 @@ public class MusicListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.music_list, container, false);
-//        songList = new ArrayList<>();
-//        songList.add(new Song("Nightcore", "Night", "4:00"));
-//        songList.add(new Song("Here comes the boom", "Unknown", "5:32"));
-//        songList.add(new Song("Born for greatness", "Roach", "4:22"));
+        songList = new ArrayList<>();
+//        songList.add(new Song("Nightcore", "Night", "4:00", "lol"));
+//        songList.add(new Song("Here comes the boom", "Unknown", "5:32", "lol"));
+//        songList.add(new Song("Born for greatness", "Roach", "4:22", "lol"));
         recycleContainer = v.findViewById(R.id.recyclelist);
-        recycleAdapter = new RecyclerViewAdapt((ArrayList)songList);
+
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         ContentResolver contentResolver = getActivity().getContentResolver();
-        songList = new ArrayList<>();
-        asyncCursor = new AsyncQuery(contentResolver, songList);
+
+        asyncCursor = new AsyncQuery(contentResolver, songList, this);
         asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-        LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
-        recycleContainer.setLayoutManager(linearLayout);
-        recycleContainer.setAdapter(recycleAdapter);
 
         return v;
     }
 
 
+    public void setRecycler(){
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
+        recycleAdapter = new RecyclerViewAdapt((ArrayList)songList);
+        recycleContainer.setLayoutManager(linearLayout);
+        recycleContainer.setAdapter(recycleAdapter);
 
+    }
 
 
 }

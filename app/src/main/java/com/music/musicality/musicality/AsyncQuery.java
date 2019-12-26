@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 
 
 import java.util.List;
@@ -17,12 +18,13 @@ public class AsyncQuery extends AsyncQueryHandler{
     private final String songDuration = MediaStore.Audio.Media.DURATION;
     private final String songPath = MediaStore.Audio.Media.DATA;
     private List<Song> songList;
-    private MainActivity mainActivity;
+    private MusicListFragment fragment;
 
-    public AsyncQuery(ContentResolver c, List<Song> songList){
+
+    public AsyncQuery(ContentResolver c, List<Song> songList, Fragment fragment){
         super(c);
         this.songList = songList;
-
+        this.fragment = (MusicListFragment)fragment;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class AsyncQuery extends AsyncQueryHandler{
                     String duration = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_DURATION);
                     songList.add(new Song(name, artist, duration, path));
                 }
-
+                fragment.setRecycler();
             }
 
         }
