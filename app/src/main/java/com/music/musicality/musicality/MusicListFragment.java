@@ -35,9 +35,7 @@ public class MusicListFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.music_list, container, false);
         songList = new ArrayList<>();
-//        songList.add(new Song("Nightcore", "Night", "4:00", "lol"));
-//        songList.add(new Song("Here comes the boom", "Unknown", "5:32", "lol"));
-//        songList.add(new Song("Born for greatness", "Roach", "4:22", "lol"));
+
         recycleContainer = v.findViewById(R.id.recyclelist);
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;

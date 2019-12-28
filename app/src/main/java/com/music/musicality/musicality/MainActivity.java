@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
 //    private AsyncQuery asyncCursor;
     private Toolbar bar;
     private TabLayout tablayout;
-    private TextView title;
-    private ImageView picture;
-    private SeekBar mbar;
-    private Button playButton;
-    private MediaPlayer musicPlayer;
-    private List<Song> playList;
     private ViewPager page;
     private ViewPagerAdapt adapter;
 
