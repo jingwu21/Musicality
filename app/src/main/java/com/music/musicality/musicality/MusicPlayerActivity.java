@@ -6,8 +6,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class MusicPlayerActivity extends AppCompatActivity {
+
+    private Button playButton;
+    private SeekBar playBar;
+    private TextView musicTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +25,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
 
     }
