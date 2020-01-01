@@ -13,7 +13,8 @@
         android:layout_height="256dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="416dp"
-        android:background="@drawable/ic_launcher_background"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/ic_music_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,39 +44,66 @@
 
     <TextView
         android:id="@+id/musicName"
-        android:layout_width="155dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="276dp"
         android:text="TextView"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <SeekBar
         android:id="@+id/playBar"
-        android:layout_width="278dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="67dp"
-        android:layout_marginRight="67dp"
+        android:layout_width="300dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="40dp"
         android:color="@color/colorBlack"
-        android:progressTintBackground="@color/colorBlack"
+
         android:thumbTint="@color/bluish"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/musicName" />
 
     <ImageButton
         android:id="@+id/playButton"
-        android:layout_width="75dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="52dp"
-        android:outlineAmbientShadowColor="@color/bluish"
-        android:background="@color/white"
-        android:src="@drawable/ic_action_name"
+        android:layout_width="70dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="56dp"
+        android:background="@color/grayish"
+        android:outlineAmbientShadowColor="@color/colorBlack"
+        android:src="@drawable/ic_pause_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playBar" />
+
+    <ImageButton
+        android:id="@+id/prevButton"
+        android:layout_width="66dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="52dp"
+        android:background="@color/grayish"
+        android:src="@drawable/ic_prev_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/playButton"
+        app:layout_constraintHorizontal_bias="0.644"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playBar"
+        app:layout_constraintVertical_bias="0.006" />
+
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="63dp"
+        android:layout_height="68dp"
+        android:background="@color/grayish"
+        android:src="@drawable/ic_next_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.388"
+        app:layout_constraintStart_toEndOf="@+id/playButton"
+        app:layout_constraintTop_toBottomOf="@+id/playBar"
+        app:layout_constraintVertical_bias="0.277" />
 
 </android.support.constraint.ConstraintLayout>

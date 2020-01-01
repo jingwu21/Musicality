@@ -12,5 +12,9 @@
     <color name="gloomyColor">#828282</color>
     <color name="bluish">#1877F2</color>
     <color name="white">#FFFFFF</color>
+    <color name="bgreen">#00ff00</color>
+    <color name="greenish">#00cc00</color>
+
+    <color name="red">#ff3232</color>
 
 </resources>
