@@ -38,7 +38,7 @@ public class ViewPagerAdapt extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 1;
     }
 
     @Nullable
@@ -47,9 +47,7 @@ public class ViewPagerAdapt extends FragmentPagerAdapter {
         position += 1;
         switch(position){
             case 1:
-                return "Tracks";
-            case 2:
-                return "Player";
+                return "Songs";
             default:
                 break;
         }

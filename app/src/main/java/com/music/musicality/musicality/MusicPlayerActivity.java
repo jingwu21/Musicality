@@ -7,12 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
-    private Button playButton;
+    private ImageButton playButton, prevButton, nextButton;
     private SeekBar playBar;
     private TextView musicTitle;
 
@@ -25,10 +26,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
+        playButton = findViewById(R.id.playButton);
+        playBar = findViewById(R.id.playBar);
+        musicTitle = findViewById(R.id.musicName);
+        prevButton = findViewById(R.id.prevButton);
+        nextButton = findViewById(R.id.nextButton);
     }
+
+
 
 
 }

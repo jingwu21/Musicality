@@ -1,6 +1,7 @@
 package com.music.musicality.musicality;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -57,7 +58,15 @@ public class MusicListFragment extends Fragment {
         ((RecyclerViewAdapt)recycleAdapter).setOnClick(new RecyclerViewAdapt.OnClicker() {
             @Override
             public void OnClickAction(int position) {
+                String songDuration = songList.get(position).getDuration();
+                String songPath = songList.get(position).getPath();
+                String songTitle = songList.get(position).getTitle();
+                String songAuthor = songList.get(position).getAuthor();
+                Intent gotToPlayer = new Intent(getActivity(), MusicPlayerActivity.class);
+                List<CharSequence> temp = new ArrayList<>();
 
+                gotToPlayer.putCharSequenceArrayListExtra("songDesc", (ArrayList<CharSequence>)temp);
+                startActivity(gotToPlayer);
             }
         });
     }

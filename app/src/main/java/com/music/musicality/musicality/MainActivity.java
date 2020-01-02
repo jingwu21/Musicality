@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         askPermission();
         page = findViewById(R.id.pager);
         adapter = new ViewPagerAdapt(getSupportFragmentManager());
-        page.setOffscreenPageLimit(2);
+        page.setOffscreenPageLimit(1);
         page.setAdapter(adapter);
         tablayout = findViewById(R.id.tab);
         tablayout.setupWithViewPager(page);
