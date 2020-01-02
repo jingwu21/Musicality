@@ -11,25 +11,47 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapt extends RecyclerView.Adapter<RecyclerViewAdapt.ViewHolders>{
     private ArrayList<Song> items;
+    private OnClicker itemClick;
 
     public static class ViewHolders extends RecyclerView.ViewHolder {
         private TextView musicTitle;
         private TextView musicAuthor;
-        public ViewHolders(@NonNull View itemView) {
+
+
+        public ViewHolders(@NonNull View itemView, final OnClicker itemClick) {
             super(itemView);
             musicTitle = itemView.findViewById(R.id.mtitle);
             musicAuthor = itemView.findViewById(R.id.mauthor);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(itemClick != null)
+                        if(getAdapterPosition() != -1)
+                            itemClick.OnClickAction(getAdapterPosition());
+
+                }
+            });
         }
     }
     public RecyclerViewAdapt(ArrayList<Song> m){
         items = m;
     }
 
+
+    interface OnClicker{
+         void OnClickAction(int position);
+    }
+
+    public void setOnClick(OnClicker c){
+        itemClick = c;
+    }
+
     @NonNull
     @Override
-    public ViewHolders onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolders onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
-        ViewHolders c = new ViewHolders(v);
+        ViewHolders c = new ViewHolders(v, itemClick);
+
         return c;
     }
 
