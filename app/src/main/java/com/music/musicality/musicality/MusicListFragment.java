@@ -22,6 +22,7 @@ public class MusicListFragment extends Fragment {
     private AsyncQuery asyncCursor;
     private RecyclerView.Adapter recycleAdapter;
     private List<Song> songList;
+    private RecyclerViewAdapt.OnClicker clickInterface;
     private RecyclerView recycleContainer;
     private RecyclerView.LayoutManager recycleLayout;
     public MusicListFragment() {
@@ -53,7 +54,12 @@ public class MusicListFragment extends Fragment {
         recycleAdapter = new RecyclerViewAdapt((ArrayList)songList);
         recycleContainer.setLayoutManager(linearLayout);
         recycleContainer.setAdapter(recycleAdapter);
+        ((RecyclerViewAdapt)recycleAdapter).setOnClick(new RecyclerViewAdapt.OnClicker() {
+            @Override
+            public void OnClickAction(int position) {
 
+            }
+        });
     }
 
 
