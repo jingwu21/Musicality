@@ -61,47 +61,25 @@ public class MainActivity extends AppCompatActivity {
         String []permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED){
-              setUp();
-//            playButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if(!musicPlayer.isPlaying())
-//                        musicPlayer.start();
-//                    else
-//                        musicPlayer.pause();
-//                }
-//            });
+
+
+
         }
         else{
             ActivityCompat.requestPermissions(this, permissions, 2555);
         }
     }
 
-    private void setUp(){
-//        title = findViewById(R.id.musicTitle);
-//        picture = findViewById(R.id.musicImage);
-//        mbar =  findViewById(R.id.musicBar);
-//        playButton = findViewById(R.id.musicPlay);
-//        musicPlayer = new MediaPlayer();
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//        ContentResolver contentResolver = getContentResolver();
-        //Cursor data = contentResolver.query(uri,null,null,null, null);
-//        playList = new ArrayList<Song>();
-//        asyncCursor = new AsyncQuery(contentResolver, playList, this);
-//        asyncCursor.startQuery(1, null, uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-//        musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        /*if(data.moveToFirst()){
-            String temp = data.getString(data.getColumnIndex(songName));
-            title.setText(temp);
-            Log.d("hello", temp);
-            System.out.println(temp);
-        }*/
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        askPermission();
+        if(requestCode == 2555){
+            if( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+
+                this.recreate();
+            }
+        }
     }
 
 
