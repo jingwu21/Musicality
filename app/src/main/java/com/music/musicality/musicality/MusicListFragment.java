@@ -63,9 +63,14 @@ public class MusicListFragment extends Fragment {
                 String songTitle = songList.get(position).getTitle();
                 String songAuthor = songList.get(position).getAuthor();
                 Intent gotToPlayer = new Intent(getActivity(), MusicPlayerActivity.class);
-                List<CharSequence> temp = new ArrayList<>();
 
-                gotToPlayer.putCharSequenceArrayListExtra("songDesc", (ArrayList<CharSequence>)temp);
+                Bundle storage = new Bundle();
+                storage.putString("duration", songDuration);
+                storage.putString("path", songPath);
+                storage.putString("title", songTitle);
+                storage.putString("author", songAuthor);
+                gotToPlayer.putExtras(storage);
+
                 startActivity(gotToPlayer);
             }
         });
