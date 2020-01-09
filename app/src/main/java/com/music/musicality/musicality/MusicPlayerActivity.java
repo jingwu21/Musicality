@@ -32,6 +32,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
 
+
     }
 
 
