@@ -1,5 +1,7 @@
 package com.music.musicality.musicality;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,7 +18,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private ImageButton playButton, prevButton, nextButton;
     private SeekBar playBar;
     private TextView musicTitle;
-
+    private MediaPlayer player;
+    private MusicService service;
+    private String title;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +36,21 @@ public class MusicPlayerActivity extends AppCompatActivity {
         musicTitle = findViewById(R.id.musicName);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
+        player = new MediaPlayer();
+        player.prepareAsync();
+        Intent intent = getIntent();
+        title = intent.getExtras().getString("title");
+        path = intent.getExtras().getString("path");
 
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                service = new MusicService(player);
+            }
+        });
 
     }
+
 
 
 
