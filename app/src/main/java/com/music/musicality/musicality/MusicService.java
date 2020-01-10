@@ -28,6 +28,15 @@ public class MusicService extends Service {
     }
 
     public int onStartCommand (Intent intent, int flags, int startId){
+        try {
+
+            player.setDataSource(path);
+            player.setLooping(true);
+            player.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return START_STICKY;
 }

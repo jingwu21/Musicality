@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +66,12 @@ public class MusicListFragment extends Fragment {
                 Intent gotToPlayer = new Intent(getActivity(), MusicPlayerActivity.class);
 
                 Bundle storage = new Bundle();
+                storage.putSerializable("mlist", (Serializable)songList);
                 storage.putString("duration", songDuration);
                 storage.putString("path", songPath);
                 storage.putString("title", songTitle);
                 storage.putString("author", songAuthor);
+                storage.putInt("pos", position);
                 gotToPlayer.putExtras(storage);
 
                 startActivity(gotToPlayer);

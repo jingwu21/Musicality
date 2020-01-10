@@ -16,12 +16,14 @@ public class RecyclerViewAdapt extends RecyclerView.Adapter<RecyclerViewAdapt.Vi
     public static class ViewHolders extends RecyclerView.ViewHolder {
         private TextView musicTitle;
         private TextView musicAuthor;
-
+        private TextView musicDuration;
 
         public ViewHolders(@NonNull View itemView, final OnClicker itemClick) {
             super(itemView);
             musicTitle = itemView.findViewById(R.id.mtitle);
             musicAuthor = itemView.findViewById(R.id.mauthor);
+            musicDuration = itemView.findViewById(R.id.duration);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,6 +62,7 @@ public class RecyclerViewAdapt extends RecyclerView.Adapter<RecyclerViewAdapt.Vi
         Song s = items.get(i);
         viewHolders.musicAuthor.setText(s.getTitle());
         viewHolders.musicTitle.setText(s.getAuthor());
+        viewHolders.musicDuration.setText(s.getDuration());
     }
 
 

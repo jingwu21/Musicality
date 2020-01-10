@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private ImageButton playButton, prevButton, nextButton;
@@ -22,6 +25,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private MusicService service;
     private String title;
     private String path;
+    private int size;
+    private List<Song> songList;
+    private int currentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
+        currentPos = intent.getExtras().getInt("pos");
+        size = ((ArrayList)intent.getExtras().getSerializable("mlist")).size();
+
+        songList = ((ArrayList)intent.getExtras().getSerializable("mlist"));
 
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -49,9 +59,32 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
 
+    public void play(){
+
+        player.reset();
+
+
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(mp.isPlaying()) {
+                    if (currentPos >= size){
+                        currentPos = 0;
+                        songList.get(currentPos).getPath();
+
+
+                    }
+                    else {
+
+                    }
+                }
+            }
+        });
+    }
 
 
 
