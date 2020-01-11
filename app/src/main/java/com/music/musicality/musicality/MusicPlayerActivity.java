@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicPlayerActivity extends AppCompatActivity {
+public class MusicPlayerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton playButton, prevButton, nextButton;
     private SeekBar playBar;
@@ -42,6 +42,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
         musicTitle = findViewById(R.id.musicName);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
+
+        setUp();
+
         player = new MediaPlayer();
         player.prepareAsync();
         Intent intent = getIntent();
@@ -59,33 +62,53 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         });
 
+        service.setSongList(songList, currentPos);
 
     }
 
+    public void setUp(){
+        playButton.setOnClickListener(this);
+        prevButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
+    }
 
-    public void play(){
+    public void playNext(){
 
         player.reset();
 
 
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if(mp.isPlaying()) {
-                    if (currentPos >= size){
-                        currentPos = 0;
-                        songList.get(currentPos).getPath();
 
-
-                    }
-                    else {
-
-                    }
-                }
-            }
-        });
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if(v == playButton && (!player.isPlaying())){
+            service.setPath(path, currentPos);
+            startService(new Intent(this, MusicService.class));
+        }
+        else if(v == prevButton){
+            currentPos -= 1;
+            if(currentPos < 0)
+                currentPos = songList.size() - 1;
+            service.setPos(currentPos);
+            service.playPrev();
 
+        }
+        else if(v == nextButton){
+            currentPos += 1;
+            if(currentPos >= size)
+                currentPos = 0;
+            service.setPos(currentPos);
+            service.playNext();
+        }
+        else if(v == playButton && (player.isPlaying())){
+            stopService(new Intent(this, MusicService.class));
+        }
+        else{
+            ;
+        }
+
+
+    }
 }
