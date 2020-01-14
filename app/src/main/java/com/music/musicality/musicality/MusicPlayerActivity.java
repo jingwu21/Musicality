@@ -99,14 +99,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if(v == playButton && (!player.isPlaying())){
-            service.setPath(path, currentPos);
+            musicService.setPath(path, currentPos);
             startService(new Intent(this, MusicService.class));
         }
         else if(v == prevButton){
             currentPos -= 1;
             if(currentPos < 0)
                 currentPos = songList.size() - 1;
-            service.setPos(currentPos);
+            musicService.setPos(currentPos);
             service.playPrev();
 
         }
@@ -114,8 +114,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             currentPos += 1;
             if(currentPos >= size)
                 currentPos = 0;
-            service.setPos(currentPos);
-            service.playNext();
+            musicService.setPos(currentPos);
+            musicService.playNext();
         }
         else if(v == playButton && (player.isPlaying())){
             stopService(new Intent(this, MusicService.class));
