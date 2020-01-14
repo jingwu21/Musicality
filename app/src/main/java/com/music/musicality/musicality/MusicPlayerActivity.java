@@ -1,8 +1,11 @@
 package com.music.musicality.musicality;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +25,28 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private SeekBar playBar;
     private TextView musicTitle;
     private MediaPlayer player;
-    private MusicService service;
+    private MusicService musicService;
     private String title;
     private String path;
     private int size;
     private List<Song> songList;
     private int currentPos;
+    private boolean bound = false;
+
+
+    ServiceConnection serviceConnection = new ServiceConnection(){
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicService.MusicServiceBind musicBind = (MusicService.MusicServiceBind)service;
+            musicService = musicBind.getBinder();
+            bound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +64,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
         setUp();
 
-        player = new MediaPlayer();
-        player.prepareAsync();
+
+
         Intent intent = getIntent();
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
@@ -55,14 +74,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
         songList = ((ArrayList)intent.getExtras().getSerializable("mlist"));
 
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                service = new MusicService(player);
-            }
-        });
+        Intent serviceIntent = new Intent(this, MusicService.class);
 
-        service.setSongList(songList, currentPos);
+
+
 
     }
 
