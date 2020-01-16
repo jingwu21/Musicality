@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MusicService extends Service {
 
-    private MediaPlayer player;
+    private MediaPlayer player = null;
     private String path;
     private int post;
     private List<Song> songList;
@@ -67,6 +67,12 @@ public class MusicService extends Service {
 
     public int onStartCommand (Intent intent, int flags, int startId){
         try {
+            if(player == null){
+                player = new MediaPlayer();
+                player.prepareAsync();
+                player.setDataSource(path);
+            }
+
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {

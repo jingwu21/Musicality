@@ -1,11 +1,13 @@
 package com.music.musicality.musicality;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -72,10 +74,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         currentPos = intent.getExtras().getInt("pos");
         size = ((ArrayList)intent.getExtras().getSerializable("mlist")).size();
 
-        songList = ((ArrayList)intent.getExtras().getSerializable("mlist"));
+        Bundle temp = intent.getBundleExtra("arraylist");
+        songList = (ArrayList<Song>)temp.getSerializable("mlist");
 
         Intent serviceIntent = new Intent(this, MusicService.class);
+        serviceIntent.putExtra("position", currentPos);
+        serviceIntent.putExtra("musPath", path);
+        serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
 
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
 
 
@@ -107,7 +114,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             if(currentPos < 0)
                 currentPos = songList.size() - 1;
             musicService.setPos(currentPos);
-            service.playPrev();
+            musicService.playPrev();
 
         }
         else if(v == nextButton){

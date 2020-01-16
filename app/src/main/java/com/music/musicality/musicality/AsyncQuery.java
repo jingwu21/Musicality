@@ -44,13 +44,13 @@ public class AsyncQuery extends AsyncQueryHandler{
                 int pathIndex = cursor.getColumnIndex(songPath);
                 MediaMetadataRetriever durRetrieval = new MediaMetadataRetriever();
                 while(cursor.moveToNext()){
-                    /*String name = cursor.getString(nameIndex);
+                    String name = cursor.getString(nameIndex);
                     String artist = cursor.getString(artistIndex);
-                    */
+
                     String path = cursor.getString(pathIndex);
                     durRetrieval.setDataSource(path);
-                    String artist = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_ARTIST);
-                    String name = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_TITLE);
+                    //String artist = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_ARTIST);
+                    //String name = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_TITLE);
                     String duration = durRetrieval.extractMetadata(durRetrieval.METADATA_KEY_DURATION);
                     songList.add(new Song(name, artist, duration, path));
                 }

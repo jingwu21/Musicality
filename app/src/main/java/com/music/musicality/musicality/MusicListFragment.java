@@ -65,13 +65,15 @@ public class MusicListFragment extends Fragment {
                 String songAuthor = songList.get(position).getAuthor();
                 Intent gotToPlayer = new Intent(getActivity(), MusicPlayerActivity.class);
 
+                Bundle temp = new Bundle();
                 Bundle storage = new Bundle();
-                storage.putSerializable("mlist", (Serializable)songList);
+                temp.putSerializable("mlist", (ArrayList<Song>)songList);
                 storage.putString("duration", songDuration);
                 storage.putString("path", songPath);
                 storage.putString("title", songTitle);
                 storage.putString("author", songAuthor);
                 storage.putInt("pos", position);
+                gotToPlayer.putExtra("arraylist", temp);
                 gotToPlayer.putExtras(storage);
 
                 startActivity(gotToPlayer);
