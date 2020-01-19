@@ -72,15 +72,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
         currentPos = intent.getExtras().getInt("pos");
-        size = ((ArrayList)intent.getExtras().getSerializable("mlist")).size();
+       // size = ((ArrayList<Song>)intent.getParcelableExtra("arraylist")).size();
 
-        Bundle temp = intent.getBundleExtra("arraylist");
-        songList = (ArrayList<Song>)temp.getSerializable("mlist");
+
+        songList = intent.getParcelableExtra("arraylist");
 
         Intent serviceIntent = new Intent(this, MusicService.class);
         serviceIntent.putExtra("position", currentPos);
         serviceIntent.putExtra("musPath", path);
-        serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
+        //serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
 
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
