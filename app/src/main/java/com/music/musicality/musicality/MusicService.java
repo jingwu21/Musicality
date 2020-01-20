@@ -8,16 +8,17 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Intent.getIntent;
 
 public class MusicService extends Service {
 
-    private MediaPlayer player = null;
-    private String path;
-    private int post;
-    private List<Song> songList;
+    private static MediaPlayer player = null;
+    private static String path;
+    private static int post;
+    private static List<Song> songList;
 
 //    public MusicService(MediaPlayer player){
 //        this.player = player;
@@ -36,11 +37,11 @@ public class MusicService extends Service {
         post = pos;
     }
 
-    public void setPos(int pos){
+    public static void setPos(int pos){
         post = pos;
     }
 
-    public void playPrev(){
+    public static void playPrev(){
         player.reset();
         String mPath = songList.get(post).getPath();
         try {
@@ -54,7 +55,7 @@ public class MusicService extends Service {
     }
 
 
-    public void playNext(){
+    public static void playNext(){
         player.reset();
         String mPath = songList.get(post).getPath();
         try {
@@ -65,13 +66,19 @@ public class MusicService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isPlaying(){
+        return player.isPlaying();
     }
 
     public int onStartCommand (Intent intent, int flags, int startId){
         try {
             if(player == null){
                 player = new MediaPlayer();
-                path = MusicPlayerActivity.path;
+                path = intent.getStringExtra("path");
+                post = intent.getIntExtra("currentPos", 0);
+                songList = (ArrayList<Song>)intent.getSerializableExtra("musicList");
                 player.setDataSource(path);
                 player.prepareAsync();
             }
@@ -128,6 +135,6 @@ public class MusicService extends Service {
     public void onDestroy (){
         super.onDestroy();
 
-        player.stop();
+        player.pause();
     }
 }

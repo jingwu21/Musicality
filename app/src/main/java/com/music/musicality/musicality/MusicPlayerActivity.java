@@ -29,12 +29,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private TextView musicTitle;
     private MediaPlayer player;
     private MusicService musicService;
-    public static String title;
-    public static String path;
+    private String title;
+    private String path;
     private int size;
 
     private List<Song> songList;
-    public static int currentPos;
+    private int currentPos;
+    private static int prevPos;
     private boolean bound = false;
 
 
@@ -74,6 +75,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
         currentPos = intent.getExtras().getInt("pos");
+
         songList = (ArrayList<Song>)intent.getSerializableExtra("arraylist");
         size = songList.size();
         Log.d("FIRE DRAGON", "the szize of array " + songList.size());
@@ -81,12 +83,23 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         //songList = intent.getParcelableExtra("arraylist");
 
         Intent serviceIntent = new Intent(this, MusicService.class);
-        serviceIntent.putExtra("position", currentPos);
-        serviceIntent.putExtra("musPath", path);
+        serviceIntent.putExtra("path", path);
+        serviceIntent.putExtra("nameMusic", title);
+        serviceIntent.putExtra("currentPos", currentPos);
         serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
+        prevPos = currentPos;
 
-        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        Log.d("CREATING", "CREATING AGAIN");
+        //bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         startService(serviceIntent);
+
+
+    }
+
+
+    public void onStart() {
+
+        super.onStart();
 
 
     }
@@ -99,7 +112,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
     public void playNext(){
 
-        player.reset();
+
 
 
 
@@ -108,15 +121,19 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if(v == playButton && (!player.isPlaying())){
-            musicService.setPath(path, currentPos);
+        if(v == playButton && (musicService.isPlaying() == true)){
+            stopService(new Intent(this, MusicService.class));
+        }
+        if(v == playButton && (musicService.isPlaying() == false)){
+           // musicService.setPath(path, currentPos);
+
             startService(new Intent(this, MusicService.class));
         }
         else if(v == prevButton){
             currentPos -= 1;
             if(currentPos < 0)
                 currentPos = songList.size() - 1;
-            musicService.setPos(currentPos);
+            //musicService.setPos(currentPos);
             musicService.playPrev();
 
         }
@@ -126,9 +143,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
                 currentPos = 0;
             musicService.setPos(currentPos);
             musicService.playNext();
-        }
-        else if(v == playButton && (player.isPlaying())){
-            stopService(new Intent(this, MusicService.class));
         }
         else{
             ;
