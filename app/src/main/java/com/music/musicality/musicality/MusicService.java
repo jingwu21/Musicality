@@ -44,24 +44,57 @@ public class MusicService extends Service {
     public static void playPrev(){
         player.reset();
         String mPath = songList.get(post).getPath();
+        path = mPath;
         try {
-            player.setDataSource(path);
+            player.setDataSource(mPath);
             player.prepareAsync();
-
+            setUp();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public static void setUp(){
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                String mPath = songList.get(post).getPath();
+                if(mp.isPlaying()) {
+                    if (post >= songList.size()){
+                        post = 0;
+                        mPath = songList.get(post).getPath();
+                    }
+                    else{
+                        post = post + 1;
+                        mPath = songList.get(post).getPath();
+                    }
+                }
+                mp.reset();
+                try {
+                    mp.setDataSource(path);
+                    mp.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
 
     public static void playNext(){
         player.reset();
-        String mPath = songList.get(post).getPath();
+        path = songList.get(post).getPath();
         try {
             player.setDataSource(path);
             player.prepareAsync();
-
+            setUp();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,7 +119,7 @@ public class MusicService extends Service {
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                     player.start();
+                     mp.start();
                 }
             });
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

@@ -110,13 +110,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         nextButton.setOnClickListener(this);
     }
 
-    public void playNext(){
 
-
-
-
-
-    }
 
 
     @Override
@@ -130,10 +124,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             startService(new Intent(this, MusicService.class));
         }
         else if(v == prevButton){
-            currentPos -= 1;
-            if(currentPos < 0)
+
+            if(currentPos <= 0)
                 currentPos = songList.size() - 1;
-            //musicService.setPos(currentPos);
+            else
+                currentPos -= 1;
+            musicService.setPos(currentPos);
             musicService.playPrev();
 
         }
@@ -141,6 +137,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             currentPos += 1;
             if(currentPos >= size)
                 currentPos = 0;
+            Log.d("POSITIONNNNN", "current position: " + currentPos);
             musicService.setPos(currentPos);
             musicService.playNext();
         }
