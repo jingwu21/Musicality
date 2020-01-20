@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +74,9 @@ public class MusicListFragment extends Fragment {
                 storage.putString("title", songTitle);
                 storage.putString("author", songAuthor);
                 storage.putInt("pos", position);
-                //gotToPlayer.putExtra("arraylist", (ArrayList<Song>)songList);
+                gotToPlayer.putExtra("arraylist", (ArrayList<Song>)songList);
                 gotToPlayer.putExtras(storage);
-
+                Log.d("LOLOLOLOLOLOLOLOL", "OMG SIZE" + songList.size());
                 startActivity(gotToPlayer);
             }
         });

@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 
+import static android.content.Intent.getIntent;
+
 public class MusicService extends Service {
 
     private MediaPlayer player = null;
@@ -69,8 +71,9 @@ public class MusicService extends Service {
         try {
             if(player == null){
                 player = new MediaPlayer();
-                player.prepareAsync();
+                path = MusicPlayerActivity.path;
                 player.setDataSource(path);
+                player.prepareAsync();
             }
 
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -103,8 +106,8 @@ public class MusicService extends Service {
 
                 }
             });
-            player.setDataSource(path);
-            player.start();
+//            player.setDataSource(path);
+//            player.start();
         } catch (IOException e) {
             e.printStackTrace();
         }

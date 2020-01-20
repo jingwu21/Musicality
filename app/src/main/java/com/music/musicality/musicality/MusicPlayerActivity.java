@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -28,11 +29,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private TextView musicTitle;
     private MediaPlayer player;
     private MusicService musicService;
-    private String title;
-    private String path;
+    public static String title;
+    public static String path;
     private int size;
+
     private List<Song> songList;
-    private int currentPos;
+    public static int currentPos;
     private boolean bound = false;
 
 
@@ -72,18 +74,19 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
         currentPos = intent.getExtras().getInt("pos");
-       // size = ((ArrayList<Song>)intent.getParcelableExtra("arraylist")).size();
+        songList = (ArrayList<Song>)intent.getSerializableExtra("arraylist");
+        size = songList.size();
+        Log.d("FIRE DRAGON", "the szize of array " + songList.size());
 
-
-        songList = intent.getParcelableExtra("arraylist");
+        //songList = intent.getParcelableExtra("arraylist");
 
         Intent serviceIntent = new Intent(this, MusicService.class);
         serviceIntent.putExtra("position", currentPos);
         serviceIntent.putExtra("musPath", path);
-        //serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
+        serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
 
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
+        startService(serviceIntent);
 
 
     }
