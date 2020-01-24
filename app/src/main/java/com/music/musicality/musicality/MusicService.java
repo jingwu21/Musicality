@@ -19,6 +19,7 @@ public class MusicService extends Service {
     private static String path;
     private static int post;
     private static List<Song> songList;
+    private static int location;
 
 //    public MusicService(MediaPlayer player){
 //        this.player = player;
@@ -146,6 +147,10 @@ public class MusicService extends Service {
 
                 }
             });
+            if(!player.isPlaying()){
+                player.seekTo(location);
+                player.start();
+            }
 //            player.setDataSource(path);
 //            player.start();
         } catch (IOException e) {
@@ -169,5 +174,6 @@ public class MusicService extends Service {
         super.onDestroy();
 
         player.pause();
+        location = player.getDuration();
     }
 }
