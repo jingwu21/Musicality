@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,8 +33,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private String title;
     private String path;
     private int size;
-
+    private Handler handler;
     private List<Song> songList;
+    private Runnable runnable;
     private int currentPos;
     private static int prevPos;
     private boolean bound = false;
@@ -66,7 +68,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         musicTitle = findViewById(R.id.musicName);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
-
+        handler = new Handler();
         setUp();
 
 
@@ -130,7 +132,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
+    private void setBarProgress(int x){
+        
+    }
 
     @Override
     public void onClick(View v) {
@@ -143,6 +147,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             startService(new Intent(this, MusicService.class));
             int dur = musicService.getCurrent();
             playBar.setMax(dur);
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }
 
         }
         else if(v == prevButton){
