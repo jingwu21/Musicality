@@ -37,6 +37,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private List<Song> songList;
     private Runnable runnable;
     private int currentPos;
+
     private static int prevPos;
     private boolean bound = false;
 
@@ -132,14 +133,21 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void setBarProgress(int x){
-        
+    private void setBarProgress(){
+        playBar.setProgress(musicService.getProgress());
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                setBarProgress();
+            }
+        };
     }
 
     @Override
     public void onClick(View v) {
         if(v == playButton && (musicService.isPlaying() == true)){
             stopService(new Intent(this, MusicService.class));
+            handler.removeCallbacks(runnable);
         }
         if(v == playButton && (musicService.isPlaying() == false)){
            // musicService.setPath(path, currentPos);
@@ -147,12 +155,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             startService(new Intent(this, MusicService.class));
             int dur = musicService.getCurrent();
             playBar.setMax(dur);
-            runnable = new Runnable() {
-                @Override
-                public void run() {
+            setBarProgress();
 
-                }
-            }
 
         }
         else if(v == prevButton){

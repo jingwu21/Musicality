@@ -65,6 +65,12 @@ public class MusicService extends Service {
         player.seekTo(x);
     }
 
+    public static int getProgress(){
+        return player.getCurrentPosition();
+    }
+
+
+
     public static void setUp(){
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -89,7 +95,13 @@ public class MusicService extends Service {
                 mp.reset();
                 try {
                     mp.setDataSource(path);
-                    mp.start();
+                    mp.prepareAsync();
+                    mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer player) {
+                           player.start();
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -124,40 +136,11 @@ public class MusicService extends Service {
                 songList = (ArrayList<Song>)intent.getSerializableExtra("musicList");
                 player.setDataSource(path);
                 player.prepareAsync();
-                location = player.getDuration();
+
             }
 
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                     mp.start();
-                }
-            });
-            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    String mPath = songList.get(post).getPath();
-                    if(mp.isPlaying()) {
-                        if (post >= songList.size()){
-                            post = 0;
-                            mPath = songList.get(post).getPath();
-                        }
-                        else{
-                            post = post + 1;
-                            mPath = songList.get(post).getPath();
-                        }
-                    }
-                    mp.reset();
-                    try {
-                        mp.setDataSource(path);
+            setUp();
 
-                        mp.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
             if(!player.isPlaying()){
                 player.seekTo(location);
                 player.start();
@@ -185,6 +168,6 @@ public class MusicService extends Service {
         super.onDestroy();
 
         player.pause();
-        location = player.getDuration();
+        location = player.getCurrentPosition();
     }
 }
