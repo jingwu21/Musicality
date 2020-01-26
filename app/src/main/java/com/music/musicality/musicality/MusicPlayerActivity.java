@@ -108,6 +108,25 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         playButton.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        playBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    musicService.setSongTime(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
 
@@ -122,6 +141,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
            // musicService.setPath(path, currentPos);
 
             startService(new Intent(this, MusicService.class));
+            int dur = musicService.getCurrent();
+            playBar.setMax(dur);
+
         }
         else if(v == prevButton){
 
@@ -131,15 +153,19 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
                 currentPos -= 1;
             musicService.setPos(currentPos);
             musicService.playPrev();
+            int dur = musicService.getCurrent();
+            playBar.setMax(dur);
 
         }
         else if(v == nextButton){
             currentPos += 1;
             if(currentPos >= size)
                 currentPos = 0;
-            Log.d("POSITIONNNNN", "current position: " + currentPos);
+
             musicService.setPos(currentPos);
             musicService.playNext();
+            int dur = musicService.getCurrent();
+            playBar.setMax(dur);
         }
         else{
             ;

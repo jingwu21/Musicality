@@ -38,6 +38,11 @@ public class MusicService extends Service {
         post = pos;
     }
 
+
+    public static int getCurrent(){
+        return location;
+    }
+
     public static void setPos(int pos){
         post = pos;
     }
@@ -54,6 +59,10 @@ public class MusicService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setSongTime(int x){
+        player.seekTo(x);
     }
 
     public static void setUp(){
@@ -115,6 +124,7 @@ public class MusicService extends Service {
                 songList = (ArrayList<Song>)intent.getSerializableExtra("musicList");
                 player.setDataSource(path);
                 player.prepareAsync();
+                location = player.getDuration();
             }
 
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -140,6 +150,7 @@ public class MusicService extends Service {
                     mp.reset();
                     try {
                         mp.setDataSource(path);
+
                         mp.start();
                     } catch (IOException e) {
                         e.printStackTrace();
