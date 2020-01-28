@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class MusicService extends Service {
     private static MediaPlayer player = null;
     private static String path;
     private static int post;
+    private static String title = null;
+    private Intent inter;
     private static List<Song> songList;
     private static int location;
 
@@ -38,6 +41,9 @@ public class MusicService extends Service {
         post = pos;
     }
 
+    public static String getName(){
+        return songList.get(post).getTitle();
+    }
 
     public static int getCurrent(){
         return location;
@@ -47,7 +53,12 @@ public class MusicService extends Service {
         post = pos;
     }
 
+    public static void pauseMusic(){
+        player.pause();
+    }
+
     public static void playPrev(){
+
         player.reset();
         String mPath = songList.get(post).getPath();
         path = mPath;
@@ -60,6 +71,8 @@ public class MusicService extends Service {
             e.printStackTrace();
         }
     }
+
+
 
     public static void setSongTime(int x){
         player.seekTo(x);
@@ -92,6 +105,7 @@ public class MusicService extends Service {
                         mPath = songList.get(post).getPath();
                     }
                 }
+                title = songList.get(post).getTitle();
                 mp.reset();
                 try {
                     mp.setDataSource(path);
@@ -111,6 +125,7 @@ public class MusicService extends Service {
     }
 
     public static void playNext(){
+
         player.reset();
         path = songList.get(post).getPath();
         try {
@@ -129,22 +144,40 @@ public class MusicService extends Service {
 
     public int onStartCommand (Intent intent, int flags, int startId){
         try {
+
+            int match = intent.getIntExtra("state", 0);
+
             if(player == null){
                 player = new MediaPlayer();
                 path = intent.getStringExtra("path");
+                title = intent.getStringExtra("nameMusic");
                 post = intent.getIntExtra("currentPos", 0);
                 songList = (ArrayList<Song>)intent.getSerializableExtra("musicList");
                 player.setDataSource(path);
                 player.prepareAsync();
-
+                setUp();
             }
-
-            setUp();
-
-            if(!player.isPlaying()){
-                player.seekTo(location);
-                player.start();
+            else if(match == 1){
+                player.reset();
+                path = intent.getStringExtra("path");
+                title = intent.getStringExtra("nameMusic");
+                post = intent.getIntExtra("currentPos", 0);
+                songList = (ArrayList<Song>)intent.getSerializableExtra("musicList");
+                player.setDataSource(path);
+                player.prepareAsync();
+                setUp();
             }
+            else{
+                if(!player.isPlaying())
+                    player.start();
+            }
+            //setUp();
+
+
+//            if(!player.isPlaying()){
+//                player.seekTo(location);
+//                player.start();
+//            }
 //            player.setDataSource(path);
 //            player.start();
         } catch (IOException e) {
@@ -167,7 +200,11 @@ public class MusicService extends Service {
     public void onDestroy (){
         super.onDestroy();
 
+
+
         player.pause();
         location = player.getCurrentPosition();
+        Log.d("PAUSING", "SERVICE CALLED");
+
     }
 }

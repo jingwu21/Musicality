@@ -76,7 +76,7 @@ public class MusicListFragment extends Fragment {
                 storage.putInt("pos", position);
                 gotToPlayer.putExtra("arraylist", (ArrayList<Song>)songList);
                 gotToPlayer.putExtras(storage);
-                Log.d("LOLOLOLOLOLOLOLOL", "OMG SIZE" + songList.size());
+
                 startActivity(gotToPlayer);
             }
         });

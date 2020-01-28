@@ -31,9 +31,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
     private MediaPlayer player;
     private MusicService musicService;
     private String title;
+
+    private static final String q = "MUSIC_TITLE";
     private String path;
     private int size;
     private Handler handler;
+    private static int currentTime;
     private List<Song> songList;
     private Runnable runnable;
     private int currentPos;
@@ -81,7 +84,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
         songList = (ArrayList<Song>)intent.getSerializableExtra("arraylist");
         size = songList.size();
-        Log.d("FIRE DRAGON", "the szize of array " + songList.size());
+
 
         //songList = intent.getParcelableExtra("arraylist");
 
@@ -90,15 +93,26 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         serviceIntent.putExtra("nameMusic", title);
         serviceIntent.putExtra("currentPos", currentPos);
         serviceIntent.putExtra("musicList", (ArrayList<Song>) songList);
+        serviceIntent.putExtra("state", 1);
         prevPos = currentPos;
 
-        Log.d("CREATING", "CREATING AGAIN");
+
+
         //bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         startService(serviceIntent);
 
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(q, title);
+    }
 
     public void onStart() {
 
@@ -107,6 +121,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    public void onDestroy(){
+        super.onDestroy();
+
+
+    }
     public void setUp(){
         playButton.setOnClickListener(this);
         prevButton.setOnClickListener(this);
@@ -148,11 +167,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         if(v == playButton && (musicService.isPlaying() == true)){
             stopService(new Intent(this, MusicService.class));
             handler.removeCallbacks(runnable);
+            currentTime = musicService.getProgress();
+
         }
         if(v == playButton && (musicService.isPlaying() == false)){
-           // musicService.setPath(path, currentPos);
+
 
             startService(new Intent(this, MusicService.class));
+
             int dur = musicService.getCurrent();
             playBar.setMax(dur);
             setBarProgress();
