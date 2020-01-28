@@ -94,17 +94,19 @@ public class MusicService extends Service {
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                post++;
                 String mPath = songList.get(post).getPath();
-                if(mp.isPlaying()) {
+                //if(mp.isPlaying()) {
                     if (post >= songList.size()){
                         post = 0;
                         mPath = songList.get(post).getPath();
                     }
                     else{
-                        post = post + 1;
+
                         mPath = songList.get(post).getPath();
                     }
-                }
+                //}
+                path = mPath;
                 title = songList.get(post).getTitle();
                 mp.reset();
                 try {
