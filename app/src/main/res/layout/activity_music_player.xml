@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/musicImage"
-        android:layout_width="278dp"
-        android:layout_height="256dp"
+        android:layout_width="183dp"
+        android:layout_height="130dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/ic_music_note"
         android:backgroundTint="@color/white"
@@ -47,10 +47,11 @@
         android:id="@+id/musicName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="276dp"
+        android:layout_marginTop="164dp"
         android:text="TextView"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -64,7 +65,7 @@
         android:thumbTint="@color/bluish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/musicName"
         app:layout_constraintVertical_bias="0.0" />
@@ -79,10 +80,10 @@
         android:src="@drawable/ic_pause_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/prevButton"
@@ -93,10 +94,10 @@
         android:src="@drawable/ic_prev_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/playButton"
-        app:layout_constraintHorizontal_bias="0.644"
+        app:layout_constraintHorizontal_bias="0.662"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playBar"
-        app:layout_constraintVertical_bias="0.006" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/nextButton"
