@@ -81,7 +81,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
         title = intent.getExtras().getString("title");
         path = intent.getExtras().getString("path");
         currentPos = intent.getExtras().getInt("pos");
-
+        musicTitle.setText(title);
         songList = (ArrayList<Song>)intent.getSerializableExtra("arraylist");
         size = songList.size();
 
@@ -154,12 +154,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
     private void setBarProgress(){
         playBar.setProgress(musicService.getProgress());
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                setBarProgress();
-            }
-        };
+        if(musicService.isPlaying()) {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    setBarProgress();
+                }
+            };
+            handler.postDelayed(runnable, 1000);
+        }
     }
 
     @Override
@@ -187,8 +190,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
                 currentPos = songList.size() - 1;
             else
                 currentPos -= 1;
-            musicService.setPos(currentPos);
-            musicService.playPrev();
+            //musicService.setPos(currentPos);
+            //musicService.playPrev();
+
+            Intent service = new Intent(this, MusicService.class);
+            service.putExtra("currentPos", currentPos);
+            service.putExtra("playOption", -2);
+            startService(service);
             int dur = musicService.getCurrent();
             playBar.setMax(dur);
 
@@ -198,8 +206,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
             if(currentPos >= size)
                 currentPos = 0;
 
-            musicService.setPos(currentPos);
-            musicService.playNext();
+            //musicService.setPos(currentPos);
+            Intent service = new Intent(this, MusicService.class);
+            service.putExtra("currentPos", currentPos);
+            service.putExtra("playOption", 2);
+            startService(service);
+            //musicService.playNext();
             int dur = musicService.getCurrent();
             playBar.setMax(dur);
         }

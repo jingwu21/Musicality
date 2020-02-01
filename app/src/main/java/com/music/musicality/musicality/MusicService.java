@@ -169,6 +169,12 @@ public class MusicService extends Service {
                 player.prepareAsync();
                 setUp();
             }
+            else if(match == 2){
+                playNext();
+            }
+            else if(match == -2){
+                playPrev();
+            }
             else{
                 if(!player.isPlaying())
                     player.start();
