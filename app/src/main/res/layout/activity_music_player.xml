@@ -46,7 +46,7 @@
     <TextView
         android:id="@+id/musicName"
         android:layout_width="96dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:text="TextView"
         android:textColor="@color/colorBlack"

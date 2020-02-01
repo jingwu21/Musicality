@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicPlayerActivity extends AppCompatActivity implements View.OnClickListener{
+public class MusicPlayerActivity extends AppCompatActivity implements View.OnClickListener, MusicService.Communication{
 
     private ImageButton playButton, prevButton, nextButton;
     private SeekBar playBar;
@@ -100,6 +100,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
         //bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         startService(serviceIntent);
+        musicService.setUpBar(this);
+
 
 
     }
@@ -123,7 +125,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
     public void onDestroy(){
         super.onDestroy();
-
+        handler.removeCallbacks(runnable);
 
     }
     public void setUp(){
@@ -178,9 +180,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
 
             startService(new Intent(this, MusicService.class));
 
-            int dur = musicService.getCurrent();
-            playBar.setMax(dur);
-            setBarProgress();
+//            int dur = musicService.getCurrent();
+//            playBar.setMax(dur);
+//            setBarProgress();
 
 
         }
@@ -190,15 +192,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
                 currentPos = songList.size() - 1;
             else
                 currentPos -= 1;
-            //musicService.setPos(currentPos);
-            //musicService.playPrev();
 
+            musicTitle.setText(songList.get(currentPos).getTitle());
             Intent service = new Intent(this, MusicService.class);
             service.putExtra("currentPos", currentPos);
-            service.putExtra("playOption", -2);
+            service.putExtra("state", -2);
             startService(service);
-            int dur = musicService.getCurrent();
-            playBar.setMax(dur);
+//            int dur = musicService.getCurrent();
+//            playBar.setMax(dur);
+//            setBarProgress();
 
         }
         else if(v == nextButton){
@@ -207,18 +209,27 @@ public class MusicPlayerActivity extends AppCompatActivity implements View.OnCli
                 currentPos = 0;
 
             //musicService.setPos(currentPos);
+            musicTitle.setText(songList.get(currentPos).getTitle());
             Intent service = new Intent(this, MusicService.class);
             service.putExtra("currentPos", currentPos);
-            service.putExtra("playOption", 2);
+            service.putExtra("state", 2);
             startService(service);
             //musicService.playNext();
-            int dur = musicService.getCurrent();
-            playBar.setMax(dur);
+//            int dur = musicService.getCurrent();
+//            playBar.setMax(dur);
+//            setBarProgress();
         }
         else{
             ;
         }
 
 
+    }
+
+    @Override
+    public void seekBarUpdate(int x, String q) {
+        musicTitle.setText(q);
+        playBar.setMax(x);
+        setBarProgress();
     }
 }

@@ -23,11 +23,15 @@ public class MusicService extends Service {
     private Intent inter;
     private static List<Song> songList;
     private static int location;
+    public static Communication seekBarCon;
 
 //    public MusicService(MediaPlayer player){
 //        this.player = player;
 //    }
 
+    interface Communication{
+        void seekBarUpdate(int x, String title);
+    }
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -39,6 +43,10 @@ public class MusicService extends Service {
     public void setPath(String s, int pos){
         path = s;
         post = pos;
+    }
+
+    public static void setUpBar(Communication q){
+        seekBarCon = q;
     }
 
     public static String getName(){
@@ -72,7 +80,9 @@ public class MusicService extends Service {
         }
     }
 
-
+    public static int getDuration(){
+        return player.getDuration();
+    }
 
     public static void setSongTime(int x){
         player.seekTo(x);
@@ -89,13 +99,14 @@ public class MusicService extends Service {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
+                seekBarCon.seekBarUpdate(player.getDuration(), songList.get(post).getTitle());
             }
         });
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 post++;
-                String mPath = songList.get(post).getPath();
+                String mPath;
                 //if(mp.isPlaying()) {
                     if (post >= songList.size()){
                         post = 0;
@@ -116,6 +127,7 @@ public class MusicService extends Service {
                         @Override
                         public void onPrepared(MediaPlayer player) {
                            player.start();
+                            seekBarCon.seekBarUpdate(player.getDuration(), title);
                         }
                     });
                 } catch (IOException e) {
@@ -158,6 +170,7 @@ public class MusicService extends Service {
                 player.setDataSource(path);
                 player.prepareAsync();
                 setUp();
+
             }
             else if(match == 1){
                 player.reset();
@@ -170,14 +183,18 @@ public class MusicService extends Service {
                 setUp();
             }
             else if(match == 2){
+                post = intent.getIntExtra("currentPos", 0);
                 playNext();
             }
             else if(match == -2){
+                post = intent.getIntExtra("currentPos", 0);
                 playPrev();
             }
             else{
-                if(!player.isPlaying())
+                if(!player.isPlaying()) {
                     player.start();
+                    seekBarCon.seekBarUpdate(player.getDuration(), title);
+                }
             }
             //setUp();
 
